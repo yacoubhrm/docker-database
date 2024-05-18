@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  db_clients:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: clients_db
+    ports:
+      - "5435:5432"
+    volumes:
+      - db_clients_data:/var/lib/postgresql/data
+
+  db_products:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: products_db
+    ports:
+      - "5436:5432"
+    volumes:
+      - db_products_data:/var/lib/postgresql/data
+
+  db_orders:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: orders_db
+    ports:
+      - "5437:5432"
+    volumes:
+      - db_orders_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    depends_on:
+      - db_clients
+      - db_products
+      - db_orders
+    environment:
+      DATABASE_URL_CLIENTS: postgres://user:password@db_clients:5432/clients_db
+      DATABASE_URL_PRODUCTS: postgres://user:password@db_products:5432/products_db
+      DATABASE_URL_ORDERS: postgres://user:password@db_orders:5432/orders_db
+    command: ["sh", "-c", "sleep 10 && python generate_data_clients.py && python generate_data_products.py && python generate_data_orders.py"]
+
+volumes:
+  db_clients_data:
+  db_products_data:
+  db_orders_data:
