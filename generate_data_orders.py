@@ -27,7 +27,12 @@ def insert_orders_data(conn, orders):
         product_id INTEGER,
         order_date DATE,
         delivery_date DATE,
-        quantity INTEGER
+        quantity INTEGER,
+        availability INTEGER,
+        address TEXT,
+        phone VARCHAR(20),
+        
+              
     )
     ''')
     
