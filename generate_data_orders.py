@@ -30,9 +30,7 @@ def insert_orders_data(conn, orders):
         quantity INTEGER,
         availability INTEGER,
         address TEXT,
-        phone VARCHAR(20),
-        
-              
+        phone VARCHAR(20)
     )
     ''')
     
