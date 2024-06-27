@@ -14,9 +14,7 @@ def create_clients_table(conn):
         last_name VARCHAR(50),
         address TEXT,
         email VARCHAR(100),
-        phone VARCHAR(20),
-        username VARCHAR(50),
-        password VARCHAR(100)  -- Augmentez la taille si nécessaire
+        phone VARCHAR(20)
     )
     ''')
     conn.commit()
@@ -30,9 +28,7 @@ def generate_clients(n):
             fake.last_name(),
             fake.address(),
             fake.email(),
-            fake.phone_number()[:20],  # Tronquer le numéro de téléphone à 20 caractères
-            fake.user_name(),  # Générer un nom d'utilisateur aléatoire
-            generate_hashed_password()  # Générer un mot de passe haché avec BCrypt
+            fake.phone_number()[:20]  # Générer un mot de passe haché avec BCrypt
         )
         clients.append(client)
     return clients
@@ -47,8 +43,8 @@ def insert_clients_data(conn, clients):
     cur = conn.cursor()
     
     cur.executemany('''
-    INSERT INTO clients (first_name, last_name, address, email, phone, username, password) 
-    VALUES (%s, %s, %s, %s, %s, %s, %s)
+    INSERT INTO clients (first_name, last_name, address, email, phone) 
+    VALUES (%s, %s, %s, %s, %s)
     ''', clients)
     
     conn.commit()
